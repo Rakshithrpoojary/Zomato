@@ -45,6 +45,13 @@ pipeline {
                 sh "trivy fs . > trivy.txt"
             }
         }
+  stage("Remove past container")
+{
+        steps{
+                sh 'docker ps -aq --filter ancestor=rakshithrpoojary/zomato:latest | xargs -r docker stop'
+                sh 'docker ps -aq --filter ancestor=rakshithrpoojary/zomato:latest | xargs -r docker rm'
+}
+}
         stage ("Build Docker Image") {
             steps {
                 sh "docker build -t zomato ."
@@ -65,13 +72,7 @@ pipeline {
                 }
             }
         }
-  stage("Remove past container")
-{
-        steps{
-                sh 'docker ps -aq --filter ancestor=rakshithrpoojary/zomato:latest | xargs -r docker stop'
-                sh 'docker ps -aq --filter ancestor=rakshithrpoojary/zomato:latest | xargs -r docker rm'
-}
-}
+
         stage ("Deploy to Container") {
             steps {
                 sh 'docker run -d --name ${TAG} -p 3000:3000 rakshithrpoojary/zomato:latest'
