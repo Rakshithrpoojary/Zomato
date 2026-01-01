@@ -52,7 +52,7 @@ pipeline {
         stage ("Tag & Push to DockerHub") {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker') {
+                    withDockerRegistry(credentialsId: 'docker',url: 'https://hub.docker.com/repositories/rakshithrpoojary') {
                         sh "docker tag zomato rakshithrpoojary/zomato:latest "
                         sh "docker push rakshithrpoojary/zomato:latest "
                     }
