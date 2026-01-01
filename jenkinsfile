@@ -49,6 +49,11 @@ pipeline {
                 sh "docker build -t zomato ."
             }
         }
+        stage ("Scan Docker Image") {
+            steps {
+                sh "trivy image zomato"
+            }
+        }
         stage ("Tag & Push to DockerHub") {
             steps {
                 script {
